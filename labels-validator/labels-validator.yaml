@@ -1,8 +1,7 @@
-
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: urlshortener-validating-policy
+  name: label-validating-policy
 spec:
   validationFailureAction: enforce
   rules:
@@ -14,7 +13,6 @@ spec:
                 - Deployment
               namespaces:
                 - urlshortener
-      
       validate:
         message: "You must have label app: mongodb or app: url-shortener when creating deployments in urlshortener namespace"
         pattern:
