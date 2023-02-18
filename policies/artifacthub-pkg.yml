@@ -3,8 +3,7 @@ name: label-validator
 displayName: Check for labels
 createdAt: 2023-02-18T00:00:00Z
 description: Policy that adds a volume to all containers in a Pod containing the certificate
-# license: Apache-2.0
-# homeURL: https://github.com/kyverno/policies/tree/main/other/add_certificates_volume
+homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/policies
 keywords:
   - kyverno
   - policy
