@@ -1,0 +1,22 @@
+version: 0.0.1
+name: label-validator
+displayName: Check for labels
+createdAt: 2023-02-18T00:00:00Z
+description: Policy that adds a volume to all containers in a Pod containing the certificate
+# license: Apache-2.0
+# homeURL: https://github.com/kyverno/policies/tree/main/other/add_certificates_volume
+keywords:
+  - kyverno
+  - policy
+links:
+  - name: Source
+    url: https://github.com/Ashwin901/policy-hub-automation/blob/master/policies/labels-validator.yml
+provider:
+  name: Ashwin901
+readme: |
+  This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
+install: |-
+    ### Usage
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/policies/labels-validator.yml
+    ```
