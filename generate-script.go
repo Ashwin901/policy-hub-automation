@@ -78,8 +78,8 @@ func main() {
 	}
 
 	fmt.Println(pwd)
-	rootDir := filepath.Join(pwd, "..", "..")
-	// rootDir := pwd
+	// rootDir := filepath.Join(pwd, "..", "..")
+	rootDir := pwd
 	policiesPath := filepath.Join(rootDir, "policies")
 	dirEntry, err := os.ReadDir(policiesPath)
 	if err != nil {

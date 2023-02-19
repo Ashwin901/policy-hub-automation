@@ -21,9 +21,19 @@ jobs:
         run: |
           go run generate-script.go
 
-      - name: Commit Changes
+      - name: Configure Git
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --global user.email "ashwin@email.com"
+          git config --global user.name "Ashwin P"
+
+      - name: Commit generated YAML files
+        run: |
           git add .
-          git commit -m "Auto-generated templates and docs" || echo "No changes to commit"
+          git commit -m "Generate artifacthub YAML files"
+          git status
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUSH_SECRET }}
+          branch: master
