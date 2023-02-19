@@ -78,21 +78,20 @@ func main() {
 	}
 
 	fmt.Println(pwd)
-	rootDir := filepath.Join(pwd, "..", "..")
-	dirEntry, err := os.ReadDir(rootDir)
+	// rootDir := filepath.Join(pwd, "..", "..")
+	rootDir := pwd
+	policiesPath := filepath.Join(rootDir, "policies")
+	dirEntry, err := os.ReadDir(policiesPath)
 	if err != nil {
-		fmt.Println("error while listing directories under library")
+		fmt.Println("error while listing directories under policies")
 		panic(err)
 	}
 
 	for _, entry := range dirEntry {
 		if entry.Type().IsDir() {
 			fmt.Println(entry.Name())
-			if entry.Name() == ".git" || entry.Name() == ".github" || entry.Name() == "_PipelineMapping" {
-				continue
-			}
 			fmt.Println("Generating artifacts for: ", entry.Name())
-			constraintTemplateContent, err := os.ReadFile(filepath.Join(pwd, entry.Name(), entry.Name()+".yaml"))
+			constraintTemplateContent, err := os.ReadFile(filepath.Join(policiesPath, entry.Name(), entry.Name()+".yaml"))
 
 			if err != nil {
 				fmt.Println("error while reading", entry.Name()+".yaml")
@@ -107,7 +106,7 @@ func main() {
 			}
 
 			fmt.Println("Template successfully unmarshaled")
-			destination := filepath.Join(pwd, entry.Name())
+			destination := filepath.Join(policiesPath, entry.Name())
 			addArtifactHubMetadata(entry.Name(), destination, entry.Name(), constraintTemplate)
 		}
 	}
