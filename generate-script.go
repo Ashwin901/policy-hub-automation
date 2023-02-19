@@ -67,13 +67,6 @@ type ArtifactHubMetadata struct {
 }
 
 const (
-	// entryPoint is the directory entry point for artifact hub
-	ahEntryPoint = "artifacthub"
-
-	// directory entry point for library
-	entryPoint = "library"
-
-	// raw github source URL
 	sourceURL = "https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/"
 )
 
@@ -85,7 +78,8 @@ func main() {
 	}
 
 	fmt.Println(pwd)
-	dirEntry, err := os.ReadDir(pwd)
+	rootDir := filepath.Join(pwd, "..", "..")
+	dirEntry, err := os.ReadDir(rootDir)
 	if err != nil {
 		fmt.Println("error while listing directories under library")
 		panic(err)
@@ -94,7 +88,7 @@ func main() {
 	for _, entry := range dirEntry {
 		if entry.Type().IsDir() {
 			fmt.Println(entry.Name())
-			if entry.Name() == ".git" {
+			if entry.Name() == ".git" || entry.Name() == ".github" {
 				continue
 			}
 			fmt.Println("Generating artifacts for: ", entry.Name())
