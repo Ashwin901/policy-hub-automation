@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: label-validating-policy
+  name: label-validator
 spec:
   validationFailureAction: enforce
   rules:

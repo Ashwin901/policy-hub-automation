@@ -3,7 +3,7 @@ name: label-validator
 displayName: Check for labels
 createdAt: 2023-02-18T00:00:00Z
 description: Policy that checks for labels in Deployments
-homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/policies
+homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/labels-validator
 keywords:
   - kyverno
   - policy
