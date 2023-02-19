@@ -88,7 +88,7 @@ func main() {
 	for _, entry := range dirEntry {
 		if entry.Type().IsDir() {
 			fmt.Println(entry.Name())
-			if entry.Name() == ".git" || entry.Name() == ".github" {
+			if entry.Name() == ".git" || entry.Name() == ".github" || entry.Name() == "_PipelineMapping" {
 				continue
 			}
 			fmt.Println("Generating artifacts for: ", entry.Name())
