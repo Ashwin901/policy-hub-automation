@@ -1,15 +1,15 @@
-version: 0.0.1
+version: 0.0.2
 name: label-validator
 displayName: Check for labels
 createdAt: 2023-02-18T00:00:00Z
-description: Policy that adds a volume to all containers in a Pod containing the certificate
+description: Policy that checks for labels in Deployments
 homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/policies
 keywords:
   - kyverno
   - policy
 links:
   - name: Source
-    url: https://github.com/Ashwin901/policy-hub-automation/blob/master/policies/labels-validator.yml
+    url: https://github.com/Ashwin901/policy-hub-automation/blob/master/labels-validator/labels-validator.yml
 provider:
   name: Ashwin901
 readme: |
@@ -17,5 +17,5 @@ readme: |
 install: |-
     ### Usage
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/policies/labels-validator.yml
+    kubectl apply -f https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/labels-validator/labels-validator.yml
     ```
