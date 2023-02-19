@@ -20,23 +20,4 @@ jobs:
       - name: Generate Templates and Docs
         run: |
           go run generate-script.go
-
-      - name: Configure Git
-        run: |
-          git config --global user.email "ashwin@email.com"
-          git config --global user.name "Ashwin P"
-      
-      - name: Print token
-        run: echo ${{ secrets.PUSH_SECRET }}
-
-      - name: Commit generated YAML files
-        run: |
-          git add .
-          git commit -m "Generate artifacthub YAML files"
-          git status
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PUSH_SECRET }}
-          branch: master
+          git diff --exit-code || (echo "Please run 'go run generate-script.go to generate artifacts" && exit 1)
