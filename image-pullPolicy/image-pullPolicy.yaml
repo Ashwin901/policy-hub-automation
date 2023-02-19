@@ -1,32 +1,32 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: label-validator
+  name: image-pullPolicy-updater
   annotations:
     policies.kyverno.io/version: 1.0.0
-    policies.kyverno.io/title: Label Validator
+    policies.kyverno.io/title: Image Pull Policy Updater
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/subject: Pod
     kyverno.io/kyverno-version: 1.6.0
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
-      This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
+      This policy ensures that the imagePullPolicy field is set to IfNotPresent
 spec:
   validationFailureAction: enforce
   rules:
-    - name: select-deployments
+    - name: select-pods
       match:
         any:
           - resources:
               kinds:
-                - Deployment
+                - Pod
               namespaces:
                 - urlshortener
-      validate:
-        message: "You must have label app: mongodb or app: url-shortener when creating deployments in urlshortener namespace"
-        pattern:
-          mateadata:
-            labels:
-              app: mongodb | url-shortener
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+              - (image): "*"
+                imagePullPolicy: "IfNotPresent"
