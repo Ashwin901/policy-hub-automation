@@ -9,7 +9,7 @@ keywords:
   - policy
 links:
   - name: Source
-    url: https://github.com/Ashwin901/policy-hub-automation/blob/master/labels-validator/labels-validator.yml
+    url: https://github.com/Ashwin901/policy-hub-automation/blob/master/labels-validator/labels-validator.yaml
 provider:
   name: Ashwin901
 readme: |
@@ -17,5 +17,5 @@ readme: |
 install: |-
     ### Usage
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/labels-validator/labels-validator.yml
+    kubectl apply -f https://raw.githubusercontent.com/Ashwin901/policy-hub-automation/master/labels-validator/labels-validator.yaml
     ```
