@@ -25,6 +25,9 @@ jobs:
         run: |
           git config --global user.email "ashwin@email.com"
           git config --global user.name "Ashwin P"
+      
+      - name: Print token
+        run: echo ${{ secrets.PUSH_SECRET }}
 
       - name: Commit generated YAML files
         run: |
