@@ -78,7 +78,6 @@ func main() {
 	}
 
 	fmt.Println(pwd)
-	// rootDir := filepath.Join(pwd, "..", "..")
 	rootDir := pwd
 	policiesPath := filepath.Join(rootDir, "policies")
 	dirEntry, err := os.ReadDir(policiesPath)
@@ -90,7 +89,6 @@ func main() {
 	for _, entry := range dirEntry {
 		if entry.Type().IsDir() {
 			fmt.Println(entry.Name())
-			fmt.Println("Generating artifacts for: ", entry.Name())
 			constraintTemplateContent, err := os.ReadFile(filepath.Join(policiesPath, entry.Name(), entry.Name()+".yaml"))
 
 			if err != nil {
@@ -105,7 +103,6 @@ func main() {
 				panic(err)
 			}
 
-			fmt.Println("Template successfully unmarshaled")
 			destination := filepath.Join(policiesPath, entry.Name())
 			addArtifactHubMetadata(entry.Name(), destination, entry.Name(), constraintTemplate)
 		}

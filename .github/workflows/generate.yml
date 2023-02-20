@@ -1,5 +1,4 @@
-name: Generate Templates and Docs
-
+name: Generate Artifact hub files
 on:
   push:
     branches:
@@ -17,10 +16,7 @@ jobs:
         with:
           go-version: 1.17
 
-      - name: Generate Templates and Docs
+      - name: Generate Artifact hub files
         run: |
           go run generate-script.go
           git diff --exit-code || (echo "Please run 'go run generate-script.go to generate artifacts" && exit 1)
-
-      - name: Check folder structure
-        run: tree
