@@ -76,8 +76,6 @@ func main() {
 		fmt.Println("error while getting pwd")
 		panic(err)
 	}
-
-	fmt.Println(pwd)
 	rootDir := pwd
 	policiesPath := filepath.Join(rootDir, "policies")
 	dirEntry, err := os.ReadDir(policiesPath)
@@ -88,7 +86,7 @@ func main() {
 
 	for _, entry := range dirEntry {
 		if entry.Type().IsDir() {
-			fmt.Println(entry.Name())
+			fmt.Println("Generating artifact hub manifests for: ", entry.Name())
 			constraintTemplateContent, err := os.ReadFile(filepath.Join(policiesPath, entry.Name(), entry.Name()+".yaml"))
 
 			if err != nil {

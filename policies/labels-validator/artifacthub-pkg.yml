@@ -1,7 +1,7 @@
 version: 1.0.0
 name: label-validator
 displayName: Label Validator
-createdAt: "2023-02-19T17:02:44Z"
+createdAt: "2023-02-20T10:40:47Z"
 description: This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
 homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/labels-validator
 keywords:

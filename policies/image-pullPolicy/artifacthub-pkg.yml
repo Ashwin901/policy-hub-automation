@@ -1,7 +1,7 @@
 version: 1.0.0
 name: image-pullPolicy-updater
 displayName: Image Pull Policy Updater
-createdAt: "2023-02-19T17:02:44Z"
+createdAt: "2023-02-20T10:40:47Z"
 description: This policy ensures that the imagePullPolicy field is set to IfNotPresent
 homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/image-pullPolicy
 keywords:
