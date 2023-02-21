@@ -19,4 +19,19 @@ jobs:
       - name: Generate Artifact hub files
         run: |
           go run generate-script.go
-          git diff --exit-code || (echo "Please run 'go run generate-script.go to generate artifacts" && exit 1)
+      
+      - name: Configure Git
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Commit generated YAML files
+        run: |
+          git commit -m "Generate artifacthub YAML files"
+          git status
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUSH_SECRET }}
+          branch: master
