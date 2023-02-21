@@ -1,8 +1,9 @@
 version: 1.0.0
 name: label-validator
 displayName: Label Validator
-createdAt: "2023-02-20T10:40:47Z"
+createdAt: "2023-02-21T10:04:07Z"
 description: This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
+digest: ca9e7f55314abc4fddfdbb948c5ed2577699094430ab4d29069aa51bbad94c88
 homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/labels-validator
 keywords:
     - kyverno
@@ -12,7 +13,7 @@ links:
       url: https://github.com/Ashwin901/policy-hub-automation/blob/master/labels-validator/labels-validator.yaml
 readme: |-
     # Label Validator
-    This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
+    	This policy checks if Deployment resource has the label app:mongodb or app:url-shortener.
 install: |-
     ### Usage
     ```shell

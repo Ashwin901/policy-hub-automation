@@ -1,9 +1,13 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 
 	"gopkg.in/yaml.v3"
@@ -115,35 +119,49 @@ func addArtifactHubMetadata(sourceDirectory, destinationPath, ahBasePath string,
 		panic(err)
 	}
 
-	artifactHubMetadata := &ArtifactHubMetadata{
-		Version:     fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/version"]),
-		Name:        fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["name"]),
-		DisplayName: fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/title"]),
-		CreatedAt:   currentDateTime.Format(time.RFC3339),
-		Description: fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/description"]),
-		HomeURL:     "https://github.com/Ashwin901/policy-hub-automation/tree/master/" + sourceDirectory,
-		Keywords: []string{
-			"kyverno",
-			"policy",
-		},
-		Links: []struct {
-			Name string "yaml:\"name,omitempty\""
-			URL  string "yaml:\"url,omitempty\""
-		}{
-			{
-				Name: "Source",
-				URL:  "https://github.com/Ashwin901/policy-hub-automation/blob/master/" + ahBasePath + "/" + ahBasePath + ".yaml",
+	templateHash := getConstraintTemplateHash(constraintTemplate)
+	artifactHubMetadata := getMetadataIfExist(filepath.Join(destinationPath, "artifacthub-pkg.yml"))
+
+	if artifactHubMetadata == nil {
+		artifactHubMetadata = &ArtifactHubMetadata{
+			Version:     "1.0.0",
+			Name:        fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["name"]),
+			DisplayName: fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/title"]),
+			CreatedAt:   currentDateTime.Format(time.RFC3339),
+			Description: fmt.Sprintf("%s", constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/description"]),
+			HomeURL:     "https://github.com/Ashwin901/policy-hub-automation/tree/master/" + sourceDirectory,
+			Keywords: []string{
+				"kyverno",
+				"policy",
 			},
-		},
-		Provider: struct {
-			Name string `yaml:"name,omitempty"`
-		}{
-			Name: "Ashwin901",
-		},
-		Install: fmt.Sprintf("### Usage\n```shell\nkubectl apply -f %s\n```", sourceURL+filepath.Join(ahBasePath, ahBasePath+".yaml")),
-		Readme: fmt.Sprintf(`# %s
-%s`, constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/title"], constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/description"]),
+			Links: []struct {
+				Name string "yaml:\"name,omitempty\""
+				URL  string "yaml:\"url,omitempty\""
+			}{
+				{
+					Name: "Source",
+					URL:  "https://github.com/Ashwin901/policy-hub-automation/blob/master/" + ahBasePath + "/" + ahBasePath + ".yaml",
+				},
+			},
+			Provider: struct {
+				Name string `yaml:"name,omitempty"`
+			}{
+				Name: "Ashwin901",
+			},
+			Install: fmt.Sprintf("### Usage\n```shell\nkubectl apply -f %s\n```", sourceURL+filepath.Join(ahBasePath, ahBasePath+".yaml")),
+			Readme: fmt.Sprintf(`# %s
+	%s`, constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/title"], constraintTemplate["metadata"].(map[string]interface{})["annotations"].(map[string]interface{})["policies.kyverno.io/description"]),
+		}
+	} else {
+		if templateHash != artifactHubMetadata.Digest {
+			version := strings.Split(artifactHubMetadata.Version, ".")[0]
+			newPolicyVersion, _ := strconv.Atoi(version)
+			newPolicyVersion++
+			artifactHubMetadata.Version = strconv.Itoa(newPolicyVersion) + ".0.0"
+		}
 	}
+
+	artifactHubMetadata.Digest = templateHash
 
 	artifactHubMetadataBytes, err := yaml.Marshal(artifactHubMetadata)
 	if err != nil {
@@ -156,4 +174,37 @@ func addArtifactHubMetadata(sourceDirectory, destinationPath, ahBasePath string,
 		fmt.Println("error while writing artifact hub metadata")
 		panic(err)
 	}
+}
+
+func getMetadataIfExist(metadataFilePath string) *ArtifactHubMetadata {
+	if _, err := os.Stat(metadataFilePath); err == nil {
+		metadataFile, err := os.ReadFile(metadataFilePath)
+		if err != nil {
+			fmt.Println("error while reading artifact hub metadata")
+			panic(err)
+		}
+
+		artifactHubMetadata := ArtifactHubMetadata{}
+		err = yaml.Unmarshal(metadataFile, &artifactHubMetadata)
+		if err != nil {
+			fmt.Println("error while unmarshaling artifact hub metadata")
+			panic(err)
+		}
+
+		return &artifactHubMetadata
+	}
+
+	return nil
+}
+
+func getConstraintTemplateHash(constraintTemplate map[string]interface{}) string {
+	constraintTemplateBytes, err := yaml.Marshal(constraintTemplate)
+	if err != nil {
+		fmt.Println("error while marshaling constraint template")
+		panic(err)
+	}
+
+	hash := sha256.New()
+	hash.Write(constraintTemplateBytes)
+	return hex.EncodeToString(hash.Sum(nil))
 }

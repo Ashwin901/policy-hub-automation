@@ -1,8 +1,9 @@
 version: 1.0.0
 name: image-pullPolicy-updater
 displayName: Image Pull Policy Updater
-createdAt: "2023-02-20T10:40:47Z"
+createdAt: "2023-02-21T10:04:07Z"
 description: This policy ensures that the imagePullPolicy field is set to IfNotPresent
+digest: c0502e34e358078191e2fefdbe3a4250c8141742b90280bec356e5c1085ee2b5
 homeURL: https://github.com/Ashwin901/policy-hub-automation/tree/master/image-pullPolicy
 keywords:
     - kyverno
@@ -12,7 +13,7 @@ links:
       url: https://github.com/Ashwin901/policy-hub-automation/blob/master/image-pullPolicy/image-pullPolicy.yaml
 readme: |-
     # Image Pull Policy Updater
-    This policy ensures that the imagePullPolicy field is set to IfNotPresent
+    	This policy ensures that the imagePullPolicy field is set to IfNotPresent
 install: |-
     ### Usage
     ```shell
